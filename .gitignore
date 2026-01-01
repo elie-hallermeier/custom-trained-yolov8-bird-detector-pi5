@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# venv
+.venv/
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# logs
+*.log
+
+# model artifacts (optional if you don't want in repo)
+# models/*.tflite
