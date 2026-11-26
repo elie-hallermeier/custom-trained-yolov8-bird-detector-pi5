@@ -31,7 +31,7 @@ except ImportError:
 
 
 # ---------------- CONFIG ----------------
-MODEL_PATH = str(Path(__file__).parent / "best_int8.tflite")
+MODEL_PATH = str(Path(__file__).resolve().parent.parent / "models" / "best_int8.tflite")
 
 # Camera resolution (lower = faster)
 CAM_W = 640
