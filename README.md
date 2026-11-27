@@ -2,6 +2,10 @@
 
 I trained a machine learning model to run on a Raspberry Pi 5 and detect birds on my balcony. It runs on the Pi's CPU with no accelerator and streams the annotated camera feed to a browser.
 
+<img src="docs/detection.jpg" alt="The model drawing a box labeled sparrow 0.80 around a sparrow on a balcony railing" width="640">
+
+The model on a balcony photo it never saw in training. Photo by Pierre Goiffon on [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Balcon_oiseaux_2020_1.jpg), CC BY-SA 4.0. The box and label are the model's output, and this image is shared under the same license.
+
 ## The problem
 
 I wanted to know when birds land on my balcony. A general COCO detector spends its capacity on 80 classes when I only care about birds, and whatever I use has to run on the Pi's CPU.
@@ -51,6 +55,11 @@ Results on the dataset's validation split:
 | mAP50-95 | 0.864 |
 
 mAP50 was already 0.95 after 5 epochs. The remaining epochs mostly tightened the boxes, taking mAP50-95 from 0.72 to 0.86. The full curve is in `training/results.csv`.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/training_curve_dark.png">
+  <img src="docs/training_curve_light.png" alt="mAP50 and mAP50-95 on the validation split for each of the 50 training epochs" width="720">
+</picture>
 
 To reproduce it, put the dataset in YOLO format at `Bird-Feeder-1/` and run:
 
@@ -103,3 +112,7 @@ cd custom-trained-yolov8-bird-detector-pi5 && python3 -m venv --system-site-pack
 Open `http://<pi-ip>:5000/` from any device on the same network.
 
 Thresholds, resolution and thread count are in the config block at the top of `src/app.py`.
+
+## Limits
+
+The accuracy numbers above are on the dataset's own validation split. On 11 public-domain feeder photos from Wikimedia Commons, at the app's 0.5 confidence threshold, the model found a bird in 2 and named the species right in 1 of them. Lowering the threshold to 0.15 gets a box in 8 of the 11. The model has mostly learned what birds look like in its training photos, so more varied training images are the next step.
